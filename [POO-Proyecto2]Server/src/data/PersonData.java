@@ -11,15 +11,16 @@ import java.util.List;
  *
  * @author Nelson
  */
-public class PadronData {
+public class PersonData {
     private String fileName;
-
-    public PadronData(String fileName) {
+    private List<Persona> personList;
+    public PersonData(String fileName) {
         this.fileName = fileName;
+        personList = new ArrayList<>();
     }
     
     public List<Persona> getAllPersons(){
-        List<Persona> personList = new ArrayList<>();
+        personList = new ArrayList<>();
         try {
             try (FileReader textFileReader = new FileReader(fileName)) {
                 BufferedReader bufReader = new BufferedReader(textFileReader);
@@ -38,4 +39,21 @@ public class PadronData {
         }
         return personList;
     }
+
+    public boolean searchPerson(String identificaction) {
+        for (Persona personList1 : personList) {
+            if (personList1.getCedula().equals(identificaction) && !personList1.isHaVotado()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Persona> getPersonList() {
+        return personList;
+    }
+
+    public void setPersonList(List<Persona> personList) {
+        this.personList = personList;
+    }    
 }

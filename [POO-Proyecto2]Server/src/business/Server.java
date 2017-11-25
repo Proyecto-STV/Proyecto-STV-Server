@@ -1,13 +1,16 @@
 package business;
 
+import domain.Candidato;
+import domain.Puesto;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.IConstants;
@@ -18,10 +21,12 @@ import util.IConstants;
  */
 public class Server extends Thread implements IConstants {
 
-    private PadronBusiness padronBusiness;
+    private PersonBusiness padronBusiness;
+    private Puesto puesto;
+    private List<Candidato> postulantes;
     
     public Server(){
-        padronBusiness = new PadronBusiness();
+        postulantes = new ArrayList<>();
     }
     
     @Override
@@ -29,8 +34,7 @@ public class Server extends Thread implements IConstants {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             System.out.println("Iniciado");
-            
-            padronBusiness.getAllPersons();
+                        
             do {
                 Socket socket = serverSocket.accept();
                 
@@ -39,8 +43,10 @@ public class Server extends Thread implements IConstants {
                 
                 String funcionString = recibir.readLine();// primer input
                 enviar.println("Servidor STV");
-                if (funcionString.equalsIgnoreCase("")) {
-                    methodInput(socket);
+                enviar.println("listo");
+                if (funcionString.equalsIgnoreCase(VALIDATE_IDENTIFITATION)) {
+                    String identification = recibir.readLine();
+                    validatePerson(socket, identification);
                 } else if (funcionString.equalsIgnoreCase("")) {
                     methodOutput(socket);
                 }
@@ -50,12 +56,14 @@ public class Server extends Thread implements IConstants {
         }
     }
 
-    private void methodInput(Socket socket) throws IOException, ClassNotFoundException {
-        ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
+    private void validatePerson(Socket socket, String identificaction) throws IOException, ClassNotFoundException {
+        boolean respond = padronBusiness.searchPerson(identificaction);
+        
+        //ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
         //Player originCoach = (Player) objectIn.readObject();
                 
         ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
-        objectOut.writeObject(null);
+        objectOut.writeObject(respond);
     }
 
     private void methodOutput(Socket socket) throws IOException {
@@ -64,4 +72,33 @@ public class Server extends Thread implements IConstants {
         
         objectOut.writeObject(null);
     }
+
+    public void loadFile(String absolutePath) {
+        padronBusiness = new PersonBusiness(absolutePath);
+        padronBusiness.getAllPersons();
+    }
+
+    public Puesto getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(Puesto puesto) {
+        this.puesto = puesto;
+    }
+
+    public void addPostulante(Candidato postulante) {
+        postulantes.add(postulante);
+    }
+    
+    public void remorePostulante(Candidato postulante){
+        postulantes.remove(postulante);
+    }
+
+    public List<Candidato> getPostulantes() {
+        return postulantes;
+    }
+
+    public void setPostulantes(List<Candidato> postulantes) {
+        this.postulantes = postulantes;
+    }        
 }

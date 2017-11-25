@@ -8,6 +8,10 @@ public class Candidato {
     private String color;
     private File foto;
 
+    public Candidato() {
+
+    }
+
     public String getNombre() {
         return nombre;
     }
