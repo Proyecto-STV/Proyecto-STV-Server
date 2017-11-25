@@ -1,19 +1,14 @@
 package domain;
 
-import java.util.ArrayList;
-
 public class Puesto {
     private String nombre;
     private String organizacion;
-    private int numero;
-    public ArrayList<Candidato> resultados;
+    private int numero;    
 
     public Puesto(String nombre, String organizacion, int numero) {
-        super();
         this.nombre = nombre;
         this.organizacion = organizacion;
         this.numero = numero;
-        this.resultados = new ArrayList<>();
     }
 
     public int getNumero() {
@@ -22,13 +17,6 @@ public class Puesto {
 
     public void setNumero(int numero) {
         this.numero = numero;
-    }
-
-    public void otorgar_puesto(Candidato ganador) {
-        if (resultados.size() > numero) {
-        } else {
-            resultados.add(ganador);
-        }
     }
 
     public String getNombre() {
@@ -46,4 +34,9 @@ public class Puesto {
     public void setOrganizacion(String organizacion) {
         this.organizacion = organizacion;
     }
+
+    @Override
+    public String toString() {
+        return "Puesto{" + "nombre=" + nombre + ", organizacion=" + organizacion + ", numero=" + numero + '}';
+    }        
 }

@@ -19,4 +19,12 @@ public class Voto {
     public void agregarCandidato(Candidato candidato) {
         info.add(candidato);
     }
+
+    public ArrayList<Candidato> getInfo() {
+        return info;
+    }
+
+    public void setInfo(ArrayList<Candidato> info) {
+        this.info = info;
+    }    
 }

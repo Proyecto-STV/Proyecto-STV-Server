@@ -3,7 +3,6 @@ package domain;
 import java.io.File;
 
 public class Candidato {
-
     private String nombre;
     private String agrupacion;
     private String color;
@@ -47,4 +46,9 @@ public class Candidato {
     public void setFoto(File foto) {
         this.foto = foto;
     }
+
+    @Override
+    public String toString() {
+        return "Candidato{" + "nombre=" + nombre + ", agrupacion=" + agrupacion + ", color=" + color + ", foto=" + foto + '}';
+    }        
 }

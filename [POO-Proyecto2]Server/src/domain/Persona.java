@@ -25,4 +25,9 @@ public class Persona {
     public void setCarnet(String cedula) {
         this.cedula = cedula;
     }
+
+    @Override
+    public String toString() {
+        return "Persona{" + "nombre=" + nombre + ", cedula=" + cedula + '}';
+    }        
 }
