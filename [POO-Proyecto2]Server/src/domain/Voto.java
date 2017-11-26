@@ -1,8 +1,9 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Voto {
+public class Voto implements Serializable{
     private ArrayList<Candidato> info;
 
     public Voto() {

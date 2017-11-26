@@ -1,8 +1,9 @@
 package domain;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class Candidato {
+public class Candidato implements Serializable{
     private String nombre;
     private String agrupacion;
     private String color;
@@ -53,6 +54,6 @@ public class Candidato {
 
     @Override
     public String toString() {
-        return "Candidato{" + "nombre=" + nombre + ", agrupacion=" + agrupacion + ", color=" + color + ", foto=" + foto + '}';
+        return "Nombre: " + nombre + ", agrupacion: " + agrupacion + '}';
     }        
 }

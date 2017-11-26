@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  *
  * @author Nelson
  */
-public class NewCandidateView extends javax.swing.JPanel {
+public class NewCandidateView extends javax.swing.JPanel{
 
     private JFileChooser seleccion = new JFileChooser();
     private File archivo;
@@ -106,6 +106,8 @@ public class NewCandidateView extends javax.swing.JPanel {
                 BotonAgregarColorActionPerformed(evt);
             }
         });
+
+        CanvasColor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 255)));
 
         javax.swing.GroupLayout CanvasColorLayout = new javax.swing.GroupLayout(CanvasColor);
         CanvasColor.setLayout(CanvasColorLayout);
@@ -207,10 +209,10 @@ public class NewCandidateView extends javax.swing.JPanel {
                         candidatoACrear.setAgrupacion(agrupacionIngresada.getText());
                         server.addPostulante(candidatoACrear);
                         
-                        candidateView.addCandidato(candidatoACrear);
-                        
-                        CreateCandidateView candidateView = new CreateCandidateView(server, principalWindow);
+                        candidateView.addCandidato(candidatoACrear);                                                
                         principalWindow.addPanel(candidateView);
+                                                
+                        server.addPostulante(candidatoACrear);
                     } else {
                         JOptionPane.showMessageDialog(null, "Por favor ingrese una foto del candidato");
                     }

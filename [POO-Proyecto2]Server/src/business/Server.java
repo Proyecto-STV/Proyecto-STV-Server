@@ -22,8 +22,9 @@ import util.IConstants;
 public class Server extends Thread implements IConstants {
 
     private PersonBusiness padronBusiness;
+    private CandidatoBusiness candidatoBusiness;
     private Puesto puesto;
-    private List<Candidato> postulantes;
+    private List<Candidato> postulantes;    
     
     public Server(){
         postulantes = new ArrayList<>();
@@ -88,10 +89,14 @@ public class Server extends Thread implements IConstants {
 
     public void addPostulante(Candidato postulante) {
         postulantes.add(postulante);
+        candidatoBusiness =  new CandidatoBusiness(CANDIDATE_FILE);
+        candidatoBusiness.save(postulantes);
     }
     
     public void remorePostulante(Candidato postulante){
         postulantes.remove(postulante);
+        candidatoBusiness =  new CandidatoBusiness(CANDIDATE_FILE);
+        candidatoBusiness.save(postulantes);
     }
 
     public List<Candidato> getPostulantes() {
