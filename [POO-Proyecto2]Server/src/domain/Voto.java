@@ -27,5 +27,17 @@ public class Voto implements Serializable{
 
     public void setInfo(ArrayList<Candidato> info) {
         this.info = info;
-    }    
+    }
+    
+    public Candidato sacar_eleccion() {
+		for (Candidato e : info) {
+			if(e.is_eliminado()) {
+			}
+			else {
+				return e;
+			}
+		}
+		return null;
+	};
+    
 }
