@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import business.Server;
@@ -29,6 +24,7 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
     private JMenuItem setVotingPeriodItem;
     /**
      * Creates new form PrincipalWindow
+     * @param pServer
      */
     public PrincipalWindow(Server pServer) {
         initComponents();
