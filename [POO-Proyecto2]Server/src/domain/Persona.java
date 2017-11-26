@@ -6,12 +6,14 @@ public class Persona implements Serializable{
     private String nombre;
     private String cedula;
     private boolean haVotado;
+    private boolean haIngresado;
 
     public Persona(String nombre, String cedula) {
         super();
         this.nombre = nombre;
         this.cedula = cedula;
         this.haVotado = false;
+        this.haIngresado = false;
     }
 
     public String getNombre() {
@@ -38,8 +40,16 @@ public class Persona implements Serializable{
         this.haVotado = haVotado;
     }
 
+    public boolean isHaIngresado() {
+        return haIngresado;
+    }
+
+    public void setHaIngresado(boolean haIngresado) {
+        this.haIngresado = haIngresado;
+    }
+
     @Override
     public String toString() {
-        return "Persona{" + "nombre=" + nombre + ", cedula=" + cedula + ", haVotado=" + haVotado + '}';
+        return "Persona{" + "nombre=" + nombre + ", cedula=" + cedula + ", haVotado=" + haVotado + ", haIngresado=" + haIngresado + '}';
     }    
 }
