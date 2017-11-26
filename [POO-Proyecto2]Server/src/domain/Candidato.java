@@ -8,7 +8,24 @@ public class Candidato implements Serializable{
     private int color;
     private byte[] foto;
     private String fotoPath;
-
+    
+	private boolean eliminado;
+	public ArrayList<Voto> mis_votos = new ArrayList<Voto>(); 
+    
+    public void agregar_a_mis_votos(Voto e) {
+		mis_votos.add(e);
+	}
+	
+	public void eliminar() {
+		this.eliminado = true;
+	}
+	
+	public boolean is_eliminado() {
+		return this.eliminado;
+	}
+    
+    
+    
     public Candidato() {
 
     }
@@ -22,6 +39,7 @@ public class Candidato implements Serializable{
         this.setAgrupacion(agrupacion);
         this.setColor(color);
         this.setFotoPath(fotoPath);
+        this.eliminado = false;
     }
 
     public void setNombre(String nombre) {
