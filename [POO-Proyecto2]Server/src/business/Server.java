@@ -26,6 +26,7 @@ public class Server extends Thread implements IConstants {
     private CandidatoBusiness candidatoBusiness;
     private Puesto puesto;
     private List<Candidato> postulantes;  
+    private List<Candidato> ganadores;  
     private List<Voto> listaVotos;
     private boolean periodoVotacion;
     
