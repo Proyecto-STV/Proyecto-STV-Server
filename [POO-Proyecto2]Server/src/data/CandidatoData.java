@@ -1,6 +1,11 @@
 package data;
 
 import domain.Candidato;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,9 +15,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -37,7 +44,7 @@ public class CandidatoData {
                 String line = bufReader.readLine();
                 while (line != null) {
                     String[] candidatoFile = line.split(";");
-                    Candidato candidato = new Candidato(candidatoFile[0], candidatoFile[1], candidatoFile[2], candidatoFile[3]);
+                    Candidato candidato = new Candidato(candidatoFile[0], candidatoFile[1], Integer.parseInt(candidatoFile[2]), candidatoFile[3]);
                     candidateList.add(candidato);
                     line = bufReader.readLine();
                 }
@@ -61,11 +68,15 @@ public class CandidatoData {
         FileOutputStream fos = null;
         try {
             File fout = new File(fileName);
+            if(fout.exists() && !fout.isDirectory()) { 
+                fout.delete();
+            }
             fout.createNewFile();
             fos = new FileOutputStream(fout);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-            for (Candidato candidate : candidatos) {
-                bw.write(candidate.getNombre() + ";" + candidate.getAgrupacion() + ";" + candidate.getColor() + ";" + candidate.getFotoPath());
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));            
+            for (Candidato candidate : candidatos) {                                      
+                bw.write(candidate.getNombre() + ";" + candidate.getAgrupacion() + ";" + candidate.getColor() + ";" + candidate.getFotoPath() + ";"
+                        + Arrays.toString(candidate.getFoto()));
                 bw.newLine();
             }
             bw.close();

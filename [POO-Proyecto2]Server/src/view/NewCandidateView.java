@@ -3,7 +3,14 @@ package view;
 import business.Server;
 import domain.Candidato;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
@@ -203,16 +210,14 @@ public class NewCandidateView extends javax.swing.JPanel{
     private void AgregarCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarCandidatoActionPerformed
         if (!nombreIngresado.getText().isEmpty()) {
             if (!agrupacionIngresada.getText().isEmpty()) {
-                if (candidatoACrear.getColor() != null) {
+                if (candidatoACrear.getColor() != 0) {
                     if (candidatoACrear.getFoto() != null) {
                         candidatoACrear.setNombre(nombreIngresado.getText());
                         candidatoACrear.setAgrupacion(agrupacionIngresada.getText());
                         server.addPostulante(candidatoACrear);
                         
                         candidateView.addCandidato(candidatoACrear);                                                
-                        principalWindow.addPanel(candidateView);
-                                                
-                        server.addPostulante(candidatoACrear);
+                        principalWindow.addPanel(candidateView);                                                
                     } else {
                         JOptionPane.showMessageDialog(null, "Por favor ingrese una foto del candidato");
                     }
@@ -237,9 +242,20 @@ public class NewCandidateView extends javax.swing.JPanel{
             archivo = seleccion.getSelectedFile();
             if (archivo.canRead()) {
                 if (archivo.getName().endsWith("jpg") || archivo.getName().endsWith("png")) {
-                    Canvas.setIcon(new ImageIcon(archivo.getAbsolutePath()));
-                    candidatoACrear.setFoto(archivo);
-                    candidatoACrear.setFotoPath(archivo.getAbsolutePath());
+                    try {
+                        Canvas.setIcon(new ImageIcon(archivo.getAbsolutePath()));
+                        
+                        BufferedImage bufferedImage = ImageIO.read(archivo.getAbsoluteFile());
+                        
+                        // get DataBufferBytes from Raster
+                        WritableRaster raster = bufferedImage .getRaster();
+                        DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
+                        
+                        candidatoACrear.setFoto(data.getData());
+                        candidatoACrear.setFotoPath(archivo.getAbsolutePath());
+                    } catch (IOException ex) {
+                        Logger.getLogger(NewCandidateView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Por favor seleccione un archivo jpg o png");
                     archivo = null;
@@ -251,7 +267,7 @@ public class NewCandidateView extends javax.swing.JPanel{
     private void BotonAgregarColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAgregarColorActionPerformed
         color = JColorChooser.showDialog(null, "Seleccione un Color", Color.BLUE);
         CanvasColor.setBackground(color);
-        candidatoACrear.setColor(color.toString());
+        candidatoACrear.setColor(color.getRGB());
     }//GEN-LAST:event_BotonAgregarColorActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

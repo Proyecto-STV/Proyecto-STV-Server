@@ -11,7 +11,6 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,8 +53,10 @@ public class Server extends Thread implements IConstants {
                 if (funcionString.equalsIgnoreCase(VALIDATE_IDENTIFITATION)) {
                     String identification = recibir.readLine();
                     validatePerson(socket, identification);
-                } else if (funcionString.equalsIgnoreCase("")) {
-                    methodOutput(socket);
+                } else if (funcionString.equalsIgnoreCase(GET_CANDIDATES)) {
+                    getCandidates(socket);
+                } else if (funcionString.equalsIgnoreCase(GET_POSITION)){
+                    getPuesto(socket);
                 }
             } while (true);
         } catch (IOException | ClassNotFoundException ex) {
@@ -79,11 +80,14 @@ public class Server extends Thread implements IConstants {
         //Player originCoach = (Player) objectIn.readObject();
     }
 
-    private void methodOutput(Socket socket) throws IOException {
-        ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());  
-        
-        
-        objectOut.writeObject(null);
+    private void getCandidates(Socket socket) throws IOException {
+        ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());                  
+        objectOut.writeObject(postulantes);
+    }
+    
+    private void getPuesto(Socket socket) throws IOException {
+        ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());                  
+        objectOut.writeObject(puesto);
     }
 
     public void loadFile(String absolutePath) {
@@ -125,5 +129,5 @@ public class Server extends Thread implements IConstants {
 
     public void setPeriodoVotacion(boolean periodoVotacion) {
         this.periodoVotacion = periodoVotacion;
-    }  
+    }     
 }

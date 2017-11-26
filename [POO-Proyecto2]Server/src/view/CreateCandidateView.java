@@ -24,6 +24,9 @@ public class CreateCandidateView extends javax.swing.JPanel {
         this.server = pServer;
         this.principalWindow = principalWindow;
         this.Pretendientes = new ArrayList<>();
+        for (Candidato postulante : server.getPostulantes()) {
+            addCandidato(postulante);
+        }
     }
 
     /**

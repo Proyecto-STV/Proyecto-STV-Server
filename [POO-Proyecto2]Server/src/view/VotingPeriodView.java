@@ -1,6 +1,7 @@
 package view;
 
 import business.Server;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -127,12 +128,16 @@ public class VotingPeriodView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonContinuarActionPerformed
-        String sHora = (String) HorasBox.getSelectedItem();
-        String sMin = (String) MinBox.getSelectedItem();
-        int iHoras = Integer.parseInt(sHora);
-        int iMin = Integer.parseInt(sMin);
-        VotingCounter votingCounter = new VotingCounter(server, iMin, iHoras, principalWindow);
-        principalWindow.addPanel(votingCounter);
+        if (server.getPuesto().getNumeroSillas() > server.getPostulantes().size()) {
+            String sHora = (String) HorasBox.getSelectedItem();
+            String sMin = (String) MinBox.getSelectedItem();
+            int iHoras = Integer.parseInt(sHora);
+            int iMin = Integer.parseInt(sMin);
+            VotingCounter votingCounter = new VotingCounter(server, iMin, iHoras, principalWindow);
+            principalWindow.addPanel(votingCounter);
+        } else {
+            JOptionPane.showMessageDialog(null, "El número de puestos es menor al numero de postulantes, no puede iniciar el periodo de votación");
+        }
     }//GEN-LAST:event_BotonContinuarActionPerformed
 
     private void HorasBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HorasBoxActionPerformed

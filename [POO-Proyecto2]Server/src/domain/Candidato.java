@@ -1,13 +1,12 @@
 package domain;
 
-import java.io.File;
 import java.io.Serializable;
 
 public class Candidato implements Serializable{
     private String nombre;
     private String agrupacion;
-    private String color;
-    private File foto;
+    private int color;
+    private byte[] foto;
     private String fotoPath;
 
     public Candidato() {
@@ -18,7 +17,7 @@ public class Candidato implements Serializable{
         return nombre;
     }
 
-    public Candidato(String nombre, String agrupacion, String color, String fotoPath) {        
+    public Candidato(String nombre, String agrupacion, int color, String fotoPath) {        
         this.setNombre(nombre);
         this.setAgrupacion(agrupacion);
         this.setColor(color);
@@ -37,19 +36,19 @@ public class Candidato implements Serializable{
         this.agrupacion = agrupacion;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
-    public File getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(File foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 
@@ -63,6 +62,6 @@ public class Candidato implements Serializable{
 
     @Override
     public String toString() {
-        return "Nombre: " + nombre + ", agrupacion: " + agrupacion + '}';
+        return "Nombre: " + nombre + ", agrupacion: " + agrupacion;
     }        
 }

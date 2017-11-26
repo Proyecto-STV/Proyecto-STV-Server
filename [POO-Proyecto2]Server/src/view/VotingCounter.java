@@ -78,18 +78,18 @@ public class VotingCounter extends javax.swing.JPanel {
                 .addContainerGap(288, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(EtiquetaVotacionFinalizada)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(178, 178, 178)
+                            .addComponent(BotonIrAlSTV))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(56, 56, 56)
                                     .addComponent(jLabel1))
-                                .addComponent(jLabel2)
-                                .addComponent(Crono, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(178, 178, 178)
-                            .addComponent(BotonIrAlSTV))))
+                                .addComponent(jLabel2))
+                            .addGap(145, 145, 145))
+                        .addComponent(Crono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(221, 221, 221))
         );
         layout.setVerticalGroup(
@@ -153,7 +153,10 @@ public class VotingCounter extends javax.swing.JPanel {
                             principalWindow.getContentPane().getParent().repaint();
                         }
                     }
-                    Crono.setText(phora + ":" + min + ":" + seg);
+                    String tiempo = phora < 10 ? "0" + phora + ":" : phora + ":";
+                    tiempo += min < 10 ? "0" + min + ":" : min + ":";
+                    tiempo += seg < 10 ? "0" + seg + ":" : seg + "";
+                    Crono.setText(tiempo);
                     Thread.sleep(999);
                 } catch (InterruptedException e) {
 
