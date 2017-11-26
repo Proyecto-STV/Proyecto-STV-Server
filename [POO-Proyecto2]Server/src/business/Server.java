@@ -129,5 +129,95 @@ public class Server extends Thread implements IConstants {
 
     public void setPeriodoVotacion(boolean periodoVotacion) {
         this.periodoVotacion = periodoVotacion;
-    }     
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public int contar_votos() {
+        
+        int necesario = listavotos.size() / postulantes.size();
+		System.out.println("La cantidad de votos es: ");
+		System.out.println(listavotos.size());
+		System.out.println("Los votos necesarios para ganar es");
+		System.out.println(necesario);
+		while(true) {
+
+		
+		if(puesto.getNumero()  - ganadores.size() == postulantes.size()) {
+			for(Candidato r: postulantes) {
+				r.eliminar();
+				ganadores.add(r);
+				System.out.printf("Este Candidato gano una silla %s \n",r.getNombre());
+			}
+		}
+		if(ganadores.size() == puesto.getNumero()) {
+			System.out.println("Ya terminaron las eleciones");			
+			return 0;
+		}
+		
+
+		for(Voto e : listavotos) {
+
+			Candidato  aux = e.sacar_eleccion();
+			if(aux!=null) {
+				aux.agregar_a_mis_votos(e);
+				for(Candidato r : postulantes) {
+					if (r.mis_votos.size() >= necesario) {
+						ganadores.add(r);
+						System.out.printf("Este Candidato gano una silla %s \n",r.getNombre());
+						r.eliminar();
+						postulantes.remove(aux);
+					}
+				}
+			}
+	}
+
+		System.out.printf("Se encuentra al mayor perdedor \n");
+
+		Candidato perdedor = postulantes.get(0);
+		for(Candidato r : postulantes) {
+			System.out.printf("La cantidad de votos del candidato %s es %d \n",r.getNombre(),r.mis_votos.size());
+			if(perdedor.mis_votos.size() > r.mis_votos.size()) {
+				perdedor = r;
+				
+			}
+		}
+		
+		
+		perdedor.eliminar();
+		postulantes.remove(perdedor);
+		System.out.printf("El perdedor es: %s \n", perdedor.getNombre());
+		for(Candidato r : postulantes) {
+			r.mis_votos.removeAll(votos);
+		}		
+		
+		
+
+	}
+	}
+    
+   public void dar_ganadores() {
+		System.out.printf("Los %d ganadares del puesto %s son \n",puesto.getNumero(), puesto.getNombre());
+		
+		for(Candidato r: ganadores) {
+			System.out.println(r.getNombre() + r.getAgrupacion() + r.getColor());
+		}
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
