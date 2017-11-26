@@ -1,0 +1,2 @@
+aa;a;java.awt.Color[r=204,g=204,b=0];C:\Users\Nelson\Documents\NetBeansProjects\Proyecto-STV-Client\[POO-Proyecto2]Client\src\assets\candidato.png
+aa;a;java.awt.Color[r=204,g=204,b=0];C:\Users\Nelson\Documents\NetBeansProjects\Proyecto-STV-Client\[POO-Proyecto2]Client\src\assets\candidato.png

@@ -41,8 +41,8 @@ public class LoadPersonsView extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        BotonBuscaPadron = new javax.swing.JButton();
         BotonContinuar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -52,14 +52,6 @@ public class LoadPersonsView extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Para empezar seleccione un padrón electoral");
 
-        BotonBuscaPadron.setBackground(new java.awt.Color(255, 255, 255));
-        BotonBuscaPadron.setText("Buscar Padrón");
-        BotonBuscaPadron.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonBuscaPadronActionPerformed(evt);
-            }
-        });
-
         BotonContinuar.setText("Continuar");
         BotonContinuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,39 +59,58 @@ public class LoadPersonsView extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("Buscar padrón");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(293, 293, 293)
+                .addComponent(jButton1)
+                .addContainerGap(406, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(293, 293, 293)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(BotonContinuar)
-                        .addComponent(BotonBuscaPadron)
                         .addComponent(jLabel2)
                         .addComponent(jLabel1))
                     .addContainerGap(293, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(271, 271, 271)
+                .addComponent(jButton1)
+                .addContainerGap(306, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(189, 189, 189)
                     .addComponent(jLabel1)
                     .addGap(26, 26, 26)
                     .addComponent(jLabel2)
-                    .addGap(18, 18, 18)
-                    .addComponent(BotonBuscaPadron)
-                    .addGap(104, 104, 104)
+                    .addGap(145, 145, 145)
                     .addComponent(BotonContinuar)
                     .addContainerGap(189, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BotonBuscaPadronActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscaPadronActionPerformed
+    private void BotonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonContinuarActionPerformed
+        if(puedeContinuar){
+            CreatePositionView createPositionView = new CreatePositionView(server, principalWindow);
+            principalWindow.addPanel(createPositionView);
+        }else{
+            JOptionPane.showMessageDialog(null,"Antes de continuar seleccione un padrón electoral");
+        }
+    }//GEN-LAST:event_BotonContinuarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (seleccion.showDialog(null,"Selección del Padrón") == JFileChooser.APPROVE_OPTION){
             archivo = seleccion.getSelectedFile();
             if(archivo.canRead()){
@@ -111,21 +122,12 @@ public class LoadPersonsView extends javax.swing.JPanel {
                 }
             }
         }
-    }//GEN-LAST:event_BotonBuscaPadronActionPerformed
-
-    private void BotonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonContinuarActionPerformed
-        if(puedeContinuar){
-            CreatePositionView createPositionView = new CreatePositionView(server, principalWindow);
-            principalWindow.addPanel(createPositionView);
-        }else{
-            JOptionPane.showMessageDialog(null,"Antes de continuar seleccione un padrón electoral");
-        }
-    }//GEN-LAST:event_BotonContinuarActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotonBuscaPadron;
     private javax.swing.JButton BotonContinuar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables

@@ -102,6 +102,7 @@ public class CreateCandidateView extends javax.swing.JPanel {
             }else{
                 NewCandidateView candidateView = new NewCandidateView(server, principalWindow, this);
                 principalWindow.addPanel(candidateView);
+                server.setPostulantes(Pretendientes);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Debe de crear un puesto primero");
@@ -114,7 +115,7 @@ public class CreateCandidateView extends javax.swing.JPanel {
     
     private void BotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEliminarActionPerformed
         Candidato candidatoAEliminar = (Candidato) ListaCandidatos.getSelectedItem();
-        
+        server.remorePostulante(candidatoAEliminar);
         ListaCandidatos.removeItem(candidatoAEliminar);
         Pretendientes.remove(candidatoAEliminar);        
     }//GEN-LAST:event_BotonEliminarActionPerformed

@@ -2,6 +2,7 @@ package business;
 
 import domain.Candidato;
 import domain.Puesto;
+import domain.Voto;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +11,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,10 +26,14 @@ public class Server extends Thread implements IConstants {
     private PersonBusiness padronBusiness;
     private CandidatoBusiness candidatoBusiness;
     private Puesto puesto;
-    private List<Candidato> postulantes;    
+    private List<Candidato> postulantes;  
+    private List<Voto> listaVotos;
+    private boolean periodoVotacion;
     
     public Server(){
-        postulantes = new ArrayList<>();
+        this.postulantes = new ArrayList<>();
+        this.listaVotos = new ArrayList<>();
+        this.periodoVotacion = false;
     }
     
     @Override
@@ -58,13 +64,19 @@ public class Server extends Thread implements IConstants {
     }
 
     private void validatePerson(Socket socket, String identificaction) throws IOException, ClassNotFoundException {
-        boolean respond = padronBusiness.searchPerson(identificaction);
-        
+        ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
+        if (this.periodoVotacion){            
+            boolean respond = padronBusiness.searchPerson(identificaction);
+            if (respond){                    
+                objectOut.writeObject(1);
+            } else {
+                objectOut.writeObject(0);
+            }
+        }else {
+            objectOut.writeObject(-1);
+        }
         //ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
         //Player originCoach = (Player) objectIn.readObject();
-                
-        ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
-        objectOut.writeObject(respond);
     }
 
     private void methodOutput(Socket socket) throws IOException {
@@ -106,4 +118,12 @@ public class Server extends Thread implements IConstants {
     public void setPostulantes(List<Candidato> postulantes) {
         this.postulantes = postulantes;
     }        
+
+    public boolean isPeriodoVotacion() {
+        return periodoVotacion;
+    }
+
+    public void setPeriodoVotacion(boolean periodoVotacion) {
+        this.periodoVotacion = periodoVotacion;
+    }  
 }

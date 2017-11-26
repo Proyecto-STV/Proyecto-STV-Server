@@ -26,6 +26,7 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
     private JMenuItem loadFileItem;
     private JMenuItem createPositionItem;
     private JMenuItem addCandidateItem;
+    private JMenuItem setVotingPeriodItem;
     /**
      * Creates new form PrincipalWindow
      */
@@ -45,23 +46,31 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
         contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));        
         
         JMenuBar menuBar = new JMenuBar();
+        
         JMenu loadFileMenu = new JMenu("Padrón");
         loadFileItem = new JMenuItem("Cargar");
-        loadFileMenu.add(loadFileItem);
         loadFileItem.addActionListener(this);
+        loadFileMenu.add(loadFileItem);        
+        
         JMenu createPositionMenu = new JMenu("Puestos");
-        createPositionItem = new JMenuItem("Crear o modificar puesto");
-        createPositionMenu.add(createPositionItem);
+        createPositionItem = new JMenuItem("Crear o modificar");
         createPositionItem.addActionListener(this);
+        createPositionMenu.add(createPositionItem);        
         
         JMenu addCandidateMenu = new JMenu("Candidatos");
         addCandidateItem = new JMenuItem("Añadir");
-        addCandidateMenu.add(addCandidateItem);
         addCandidateItem.addActionListener(this);
+        addCandidateMenu.add(addCandidateItem);        
+        
+        JMenu setVotingPeriodMenu = new JMenu("Horario de votacion");
+        setVotingPeriodItem = new JMenuItem("Definir periodo");
+        setVotingPeriodItem.addActionListener(this);
+        setVotingPeriodMenu.add(setVotingPeriodItem);        
         
         menuBar.add(loadFileMenu);
         menuBar.add(createPositionMenu);
         menuBar.add(addCandidateMenu);
+        menuBar.add(setVotingPeriodMenu);
         
         contentPane.getParent().add(menuBar).setBounds(0, 0, 820, 20);
         
@@ -74,6 +83,7 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
         contentPane.add(panel).setBounds(0, 20, 800, 600);     
         contentPane.repaint();
         contentPane.updateUI();
+        contentPane.getParent().repaint();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -111,6 +121,9 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
         } else if (e.getSource() == addCandidateItem){
             CreateCandidateView candidateView = new CreateCandidateView(server, this);
             addPanel(candidateView);
+        } else if (e.getSource() == setVotingPeriodItem){
+            VotingPeriodView votingPeriodView = new VotingPeriodView(server, this);
+            addPanel(votingPeriodView);
         }
     }
 
