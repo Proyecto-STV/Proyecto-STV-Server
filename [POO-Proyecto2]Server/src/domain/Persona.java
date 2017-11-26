@@ -16,6 +16,13 @@ public class Persona implements Serializable{
         this.haIngresado = false;
     }
 
+    public Persona(String nombre, String cedula, boolean haVotado, boolean haIngresado) {
+        this.nombre = nombre;
+        this.cedula = cedula;
+        this.haVotado = haVotado;
+        this.haIngresado = haIngresado;        
+    }
+
     public String getNombre() {
         return nombre;
     }

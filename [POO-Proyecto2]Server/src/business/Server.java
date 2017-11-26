@@ -1,6 +1,7 @@
 package business;
 
 import domain.Candidato;
+import domain.Persona;
 import domain.Puesto;
 import domain.Voto;
 import java.io.BufferedReader;
@@ -67,14 +68,18 @@ public class Server extends Thread implements IConstants {
     private void validatePerson(Socket socket, String identificaction) throws IOException, ClassNotFoundException {
         ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
         if (this.periodoVotacion){            
-            boolean respond = padronBusiness.searchPerson(identificaction);
-            if (respond){                    
+            Persona respond = padronBusiness.searchPerson(identificaction);
+            if (respond != null){                    
                 objectOut.writeObject(1);
+                objectOut.writeObject(respond);
+                padronBusiness.save(padronBusiness.getVotantesList());
             } else {
                 objectOut.writeObject(0);
+                objectOut.writeObject(null);
             }
         }else {
             objectOut.writeObject(-1);
+            objectOut.writeObject(null);
         }
         //ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
         //Player originCoach = (Player) objectIn.readObject();
@@ -109,7 +114,7 @@ public class Server extends Thread implements IConstants {
         candidatoBusiness.save(postulantes);
     }
     
-    public void remorePostulante(Candidato postulante){
+    public void removePostulante(Candidato postulante){
         postulantes.remove(postulante);
         candidatoBusiness =  new CandidatoBusiness(CANDIDATE_FILE);
         candidatoBusiness.save(postulantes);

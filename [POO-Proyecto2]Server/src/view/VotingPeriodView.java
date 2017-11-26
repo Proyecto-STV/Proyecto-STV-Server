@@ -11,6 +11,7 @@ public class VotingPeriodView extends javax.swing.JPanel {
 
     private Server server;
     private PrincipalWindow principalWindow;
+    private VotingCounter votingCounter;
     /**
      * Creates new form VotingPeriodView
      * @param server
@@ -128,18 +129,27 @@ public class VotingPeriodView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonContinuarActionPerformed
-        if (server.getPuesto().getNumeroSillas() > server.getPostulantes().size()) {
+        if (server.getPuesto().getNumeroSillas() < server.getPostulantes().size()) {
             String sHora = (String) HorasBox.getSelectedItem();
             String sMin = (String) MinBox.getSelectedItem();
             int iHoras = Integer.parseInt(sHora);
             int iMin = Integer.parseInt(sMin);
-            VotingCounter votingCounter = new VotingCounter(server, iMin, iHoras, principalWindow);
+            votingCounter = new VotingCounter(server, iMin, iHoras, principalWindow);
             principalWindow.addPanel(votingCounter);
+            principalWindow.enableCounterViewItem();
         } else {
             JOptionPane.showMessageDialog(null, "El número de puestos es menor al numero de postulantes, no puede iniciar el periodo de votación");
         }
     }//GEN-LAST:event_BotonContinuarActionPerformed
 
+    public VotingCounter getVotingCounter() {
+        return votingCounter;
+    }
+
+    public void setVotingCounter(VotingCounter votingCounter) {
+        this.votingCounter = votingCounter;
+    }   
+    
     private void HorasBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HorasBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_HorasBoxActionPerformed

@@ -2,7 +2,7 @@ package view;
 
 import business.Server;
 import domain.Candidato;
-import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class CreateCandidateView extends javax.swing.JPanel {
 
-    private ArrayList<Candidato> Pretendientes;
+    private List<Candidato> Pretendientes;
     private Server server;
     private PrincipalWindow principalWindow;
     /**
@@ -23,7 +23,7 @@ public class CreateCandidateView extends javax.swing.JPanel {
         initComponents();
         this.server = pServer;
         this.principalWindow = principalWindow;
-        this.Pretendientes = new ArrayList<>();
+        this.Pretendientes = server.getPostulantes();
         for (Candidato postulante : server.getPostulantes()) {
             addCandidato(postulante);
         }
@@ -118,7 +118,7 @@ public class CreateCandidateView extends javax.swing.JPanel {
     
     private void BotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEliminarActionPerformed
         Candidato candidatoAEliminar = (Candidato) ListaCandidatos.getSelectedItem();
-        server.remorePostulante(candidatoAEliminar);
+        server.removePostulante(candidatoAEliminar);
         ListaCandidatos.removeItem(candidatoAEliminar);
         Pretendientes.remove(candidatoAEliminar);        
     }//GEN-LAST:event_BotonEliminarActionPerformed

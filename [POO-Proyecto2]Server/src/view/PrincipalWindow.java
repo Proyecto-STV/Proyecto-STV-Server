@@ -16,12 +16,15 @@ import javax.swing.JPanel;
  */
 public class PrincipalWindow extends javax.swing.JFrame implements ActionListener{
 
-    private JPanel contentPane;
-    private Server server;
+    private JPanel contentPane;    
     private JMenuItem loadFileItem;
     private JMenuItem createPositionItem;
     private JMenuItem addCandidateItem;
     private JMenuItem setVotingPeriodItem;
+    private JMenuItem counterViewItem;    
+    
+    private Server server;
+    private VotingPeriodView votingPeriodView;
     /**
      * Creates new form PrincipalWindow
      * @param pServer
@@ -59,9 +62,14 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
         addCandidateMenu.add(addCandidateItem);        
         
         JMenu setVotingPeriodMenu = new JMenu("Horario de votacion");
+        
         setVotingPeriodItem = new JMenuItem("Definir periodo");
         setVotingPeriodItem.addActionListener(this);
-        setVotingPeriodMenu.add(setVotingPeriodItem);        
+        counterViewItem = new JMenuItem("Cronómetro");
+        counterViewItem.addActionListener(this);
+        counterViewItem.setEnabled(false);        
+        setVotingPeriodMenu.add(setVotingPeriodItem);   
+        setVotingPeriodMenu.add(counterViewItem);   
         
         menuBar.add(loadFileMenu);
         menuBar.add(createPositionMenu);
@@ -118,9 +126,15 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
             CreateCandidateView candidateView = new CreateCandidateView(server, this);
             addPanel(candidateView);
         } else if (e.getSource() == setVotingPeriodItem){
-            VotingPeriodView votingPeriodView = new VotingPeriodView(server, this);
+            votingPeriodView = new VotingPeriodView(server, this);
             addPanel(votingPeriodView);
+        } else if (e.getSource() == counterViewItem){
+            addPanel(votingPeriodView.getVotingCounter());
         }
+    }
+    
+    public void enableCounterViewItem(){
+        counterViewItem.setEnabled(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
