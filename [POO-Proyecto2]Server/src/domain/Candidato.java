@@ -8,6 +8,7 @@ public class Candidato implements Serializable{
     private String agrupacion;
     private String color;
     private File foto;
+    private String fotoPath;
 
     public Candidato() {
 
@@ -17,11 +18,11 @@ public class Candidato implements Serializable{
         return nombre;
     }
 
-    public Candidato(String nombre, String agrupacion, String color) {
-        super();
+    public Candidato(String nombre, String agrupacion, String color, String fotoPath) {        
         this.setNombre(nombre);
         this.setAgrupacion(agrupacion);
         this.setColor(color);
+        this.setFotoPath(fotoPath);
     }
 
     public void setNombre(String nombre) {
@@ -51,6 +52,14 @@ public class Candidato implements Serializable{
     public void setFoto(File foto) {
         this.foto = foto;
     }
+
+    public String getFotoPath() {
+        return fotoPath;
+    }
+
+    public void setFotoPath(String fotoPath) {
+        this.fotoPath = fotoPath;
+    }        
 
     @Override
     public String toString() {

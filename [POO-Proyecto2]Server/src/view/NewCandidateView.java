@@ -239,7 +239,7 @@ public class NewCandidateView extends javax.swing.JPanel{
                 if (archivo.getName().endsWith("jpg") || archivo.getName().endsWith("png")) {
                     Canvas.setIcon(new ImageIcon(archivo.getAbsolutePath()));
                     candidatoACrear.setFoto(archivo);
-
+                    candidatoACrear.setFotoPath(archivo.getAbsolutePath());
                 } else {
                     JOptionPane.showMessageDialog(null, "Por favor seleccione un archivo jpg o png");
                     archivo = null;

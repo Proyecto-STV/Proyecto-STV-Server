@@ -36,8 +36,8 @@ public class CandidatoData {
 
                 String line = bufReader.readLine();
                 while (line != null) {
-                    String[] personaFile = line.split(";");
-                    Candidato candidato = new Candidato(personaFile[0], personaFile[1], personaFile[2]);
+                    String[] candidatoFile = line.split(";");
+                    Candidato candidato = new Candidato(candidatoFile[0], candidatoFile[1], candidatoFile[2], candidatoFile[3]);
                     candidateList.add(candidato);
                     line = bufReader.readLine();
                 }
@@ -65,7 +65,7 @@ public class CandidatoData {
             fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
             for (Candidato candidate : candidatos) {
-                bw.write(candidate.getNombre() + ";" + candidate.getAgrupacion() + ";" + candidate.getColor());
+                bw.write(candidate.getNombre() + ";" + candidate.getAgrupacion() + ";" + candidate.getColor() + ";" + candidate.getFotoPath());
                 bw.newLine();
             }
             bw.close();
