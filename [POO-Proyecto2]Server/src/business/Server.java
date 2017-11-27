@@ -27,6 +27,8 @@ public class Server extends Thread implements IConstants {
     private PersonBusiness padronBusiness;
     private PersonBusiness votantesBusiness;
     
+    private VotoBusiness votoBusiness;
+    
     private CandidatoBusiness candidatoBusiness;
     private Puesto puesto;
     private List<Candidato> postulantes;
@@ -40,6 +42,7 @@ public class Server extends Thread implements IConstants {
         this.periodoVotacion = false;
         this.padronBusiness = new PersonBusiness(PERSONS_FILE_NAME);
         this.votantesBusiness = new PersonBusiness(VOTANTES_FILE_NAME);
+        this.votoBusiness = new VotoBusiness(VOTOS_FILE);
     }
 
     @Override
@@ -117,6 +120,7 @@ public class Server extends Thread implements IConstants {
         ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
         Voto voto = (Voto) objectIn.readObject();
         listaVotos.add(voto);
+        votoBusiness.save(listaVotos);
         for (Voto listaVoto : listaVotos) {
             listaVoto.imprimirVotos();
         }
