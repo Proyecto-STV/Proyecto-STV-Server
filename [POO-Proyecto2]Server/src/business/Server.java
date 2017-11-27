@@ -230,12 +230,12 @@ public class Server extends Thread implements IConstants {
 			perdedor.eliminar();
 			perdedor.mis_votos.removeAll(listaVotos);
 			perdedores.add(perdedor);
-			puesto.corriendo.remove(perdedor);
+			postulantes.remove(perdedor);
 			System.out.printf("El perdedor es: %s con %d votos \n", perdedor.getNombre(), perdedor.mis_votos.size());
 		}
       	for(Candidato r : ganadores) {
 			for(Voto este : r.mis_votos) {
-				votos.remove(este);
+				listaVotos.remove(este);
 			}
 		}
         
