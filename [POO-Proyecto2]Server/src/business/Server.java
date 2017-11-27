@@ -33,11 +33,14 @@ public class Server extends Thread implements IConstants {
     private Puesto puesto;
     private List<Candidato> postulantes;
     private List<Candidato> ganadores;
+    private List<Candidato> perdedores;
     private List<Voto> listaVotos;
     private boolean periodoVotacion;
 
     public Server() {
         this.postulantes = new ArrayList<>();
+	this.perdedores = new ArrayList<>();
+	this.ganadores = new ArrayList<>();
         this.listaVotos = new ArrayList<>();
         this.periodoVotacion = false;
         this.padronBusiness = new PersonBusiness(PERSONS_FILE_NAME);
@@ -158,7 +161,12 @@ public class Server extends Thread implements IConstants {
     public List<Candidato> getPostulantes() {
         return postulantes;
     }
-
+    public List<Candidato> getPerdedores() {
+        return perdedores;
+    }
+    public List<Candidato> getGanadores() {
+        return ganadores;
+    }
     public void setPostulantes(List<Candidato> postulantes) {
         this.postulantes = postulantes;
     }
@@ -177,7 +185,7 @@ public class Server extends Thread implements IConstants {
         System.out.println(listaVotos.size());
         System.out.println("Los votos necesarios para ganar es");
         System.out.println(necesario);
-        while (true) {
+   
 
             if (puesto.getNumero() - ganadores.size() == postulantes.size()) {
                 for (Candidato r : postulantes) {
@@ -220,7 +228,8 @@ public class Server extends Thread implements IConstants {
 
 		if(perdedor != null) {
 			perdedor.eliminar();
-		
+			perdedor.mis_votos.removeAll(listaVotos);
+			perdedores.add(perdedor);
 			puesto.corriendo.remove(perdedor);
 			System.out.printf("El perdedor es: %s con %d votos \n", perdedor.getNombre(), perdedor.mis_votos.size());
 		}
@@ -233,7 +242,7 @@ public class Server extends Thread implements IConstants {
         for (Candidato r : postulantes) {
                 r.mis_votos.removeAll(listaVotos);
             }
-        }
+        return 1;
     }
 
     public void dar_ganadores() {
