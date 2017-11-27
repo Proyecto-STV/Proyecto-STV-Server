@@ -219,7 +219,7 @@ public class Server extends Thread implements IConstants {
 			System.out.printf("Se encuentra al mayor perdedor \n");
 		}
             
-        for (Candidato r : postulantes) 
+        for (Candidato r : postulantes) {
             System.out.printf("La cantidad de votos del candidato %s es %d \n", r.getNombre(), r.mis_votos.size());
             if (perdedor.mis_votos.size() > r.mis_votos.size()) {
                 perdedor = r;
