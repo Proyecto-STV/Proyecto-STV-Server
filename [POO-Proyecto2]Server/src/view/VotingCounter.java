@@ -64,6 +64,7 @@ public class VotingCounter extends javax.swing.JPanel {
         jLabel2.setText("La votación termina en:");
 
         BotonIrAlSTV.setText("Conteo de votos");
+        BotonIrAlSTV.setEnabled(false);
         BotonIrAlSTV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonIrAlSTVActionPerformed(evt);
@@ -112,6 +113,8 @@ public class VotingCounter extends javax.swing.JPanel {
     private void BotonIrAlSTVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIrAlSTVActionPerformed
         if (conteoVotos) {
             //El codigo para ir al siguiente frame
+            ContabilizarVotos contabilizarVotos = new ContabilizarVotos(server);
+            principalWindow.addPanel(contabilizarVotos);
         } else {
             JOptionPane.showMessageDialog(null, "La votación aún no termina. Espere que finalice.");
         }
@@ -151,6 +154,8 @@ public class VotingCounter extends javax.swing.JPanel {
                             start = false;
                             EtiquetaVotacionFinalizada.setText("La votacion ha terminado");                           
                             principalWindow.getContentPane().getParent().repaint();
+                            BotonIrAlSTV.setEnabled(true);
+                            principalWindow.enableCounterViewItem();
                         }
                     }
                     String tiempo = phora < 10 ? "0" + phora + ":" : phora + ":";

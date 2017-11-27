@@ -26,9 +26,9 @@ public class Server extends Thread implements IConstants {
 
     private PersonBusiness padronBusiness;
     private PersonBusiness votantesBusiness;
-    
+
     private VotoBusiness votoBusiness;
-    
+
     private CandidatoBusiness candidatoBusiness;
     private Puesto puesto;
     private List<Candidato> postulantes;
@@ -39,8 +39,8 @@ public class Server extends Thread implements IConstants {
 
     public Server() {
         this.postulantes = new ArrayList<>();
-	this.perdedores = new ArrayList<>();
-	this.ganadores = new ArrayList<>();
+        this.perdedores = new ArrayList<>();
+        this.ganadores = new ArrayList<>();
         this.listaVotos = new ArrayList<>();
         this.periodoVotacion = false;
         this.padronBusiness = new PersonBusiness(PERSONS_FILE_NAME);
@@ -70,9 +70,9 @@ public class Server extends Thread implements IConstants {
                     getCandidates(socket);
                 } else if (funcionString.equalsIgnoreCase(GET_POSITION)) {
                     getPuesto(socket);
-                } else if (funcionString.equalsIgnoreCase(CLIENT_CLOSED)){
+                } else if (funcionString.equalsIgnoreCase(CLIENT_CLOSED)) {
                     clientClossing(socket);
-                } else if (funcionString.equalsIgnoreCase(SEND_VOTE)){
+                } else if (funcionString.equalsIgnoreCase(SEND_VOTE)) {
                     sendVote(socket);
                 }
             } while (true);
@@ -98,7 +98,7 @@ public class Server extends Thread implements IConstants {
         } else {
             objectOut.writeObject(-1);
             objectOut.writeObject(null);
-        }       
+        }
     }
 
     private void getCandidates(Socket socket) throws IOException {
@@ -110,7 +110,7 @@ public class Server extends Thread implements IConstants {
         ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
         objectOut.writeObject(puesto);
     }
-    
+
     private void clientClossing(Socket socket) throws IOException, ClassNotFoundException {
         ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
         Persona person = (Persona) objectIn.readObject();
@@ -118,7 +118,7 @@ public class Server extends Thread implements IConstants {
         System.out.println(person.toString());
         votantesBusiness.updatePersona(person);
     }
-    
+
     private void sendVote(Socket socket) throws IOException, ClassNotFoundException {
         ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
         Voto voto = (Voto) objectIn.readObject();
@@ -161,12 +161,15 @@ public class Server extends Thread implements IConstants {
     public List<Candidato> getPostulantes() {
         return postulantes;
     }
+
     public List<Candidato> getPerdedores() {
         return perdedores;
     }
+
     public List<Candidato> getGanadores() {
         return ganadores;
     }
+
     public void setPostulantes(List<Candidato> postulantes) {
         this.postulantes = postulantes;
     }
@@ -179,69 +182,70 @@ public class Server extends Thread implements IConstants {
         this.periodoVotacion = periodoVotacion;
     }
 
-    public int contar_votos() {        
-        int necesario = (listaVotos.size() / puesto.getNumero() + 1) + 1; //Es drop
+    public int contar_votos() {
+        int necesario = listaVotos.size() / puesto.getNumero(); //Es drop
         System.out.println("La cantidad de votos es: ");
         System.out.println(listaVotos.size());
         System.out.println("Los votos necesarios para ganar es");
         System.out.println(necesario);
-   
 
-            if (puesto.getNumero() - ganadores.size() == postulantes.size()) {
-                for (Candidato r : postulantes) {
-                    r.eliminar();
-                    ganadores.add(r);
-                    System.out.printf("Este Candidato gano una silla %s \n", r.getNombre());
+        if (puesto.getNumero() - ganadores.size() == postulantes.size()) {
+            for (Candidato r : postulantes) {
+                r.eliminar();
+                ganadores.add(r);
+                postulantes.remove(r);
+                System.out.printf("Este Candidato gano una silla %s \n", r.getNombre());
+            }
+        }
+        if (ganadores.size() == puesto.getNumero()) {
+            System.out.println("Ya terminaron las eleciones");
+            return 0;
+        }
+        for (Voto e : listaVotos) {
+
+            Candidato aux = e.sacar_eleccion();
+            if (aux != null) {
+                aux.agregar_a_mis_votos(e);
+                
+                if (aux.mis_votos.size() >= necesario) {
+                    ganadores.add(aux);
+                    System.out.printf("Este Candidato gano una silla %s \n", aux.getNombre());
+                    aux.eliminar();
+                    postulantes.remove(aux);
                 }
             }
-            if (ganadores.size() == puesto.getNumero()) {
-                System.out.println("Ya terminaron las eleciones");
-                return 0;
-            }
-            for (Voto e : listaVotos) {
+        }
 
-                Candidato aux = e.sacar_eleccion();
-                if (aux != null) {
-                    aux.agregar_a_mis_votos(e);
-                    if (aux.mis_votos.size() >= necesario) {
-                        ganadores.add(aux);
-                        System.out.printf("Este Candidato gano una silla %s \n", aux.getNombre());
-                        aux.eliminar();
-                        postulantes.remove(aux);
-                    }
-                    
-                }
-            }
+        Candidato perdedor = null;
+        if (!postulantes.isEmpty()) {
+            perdedor = postulantes.get(0);
+            System.out.printf("Se encuentra al mayor perdedor \n");
+        }
 
-		Candidato perdedor = null;
-		if(!postulantes.isEmpty()) {
-			perdedor = postulantes.get(0);
-			System.out.printf("Se encuentra al mayor perdedor \n");
-		}
-            
         for (Candidato r : postulantes) {
             System.out.printf("La cantidad de votos del candidato %s es %d \n", r.getNombre(), r.mis_votos.size());
             if (perdedor.mis_votos.size() > r.mis_votos.size()) {
                 perdedor = r;
-                }
             }
+        }
 
-		if(perdedor != null) {
-			perdedor.eliminar();
-			perdedor.mis_votos.removeAll(listaVotos);
-			perdedores.add(perdedor);
-			postulantes.remove(perdedor);
-			System.out.printf("El perdedor es: %s con %d votos \n", perdedor.getNombre(), perdedor.mis_votos.size());
-		}
-      	for(Candidato r : ganadores) {
-			for(Voto este : r.mis_votos) {
-				listaVotos.remove(este);
-			}
-		}
-        
-        for (Candidato r : postulantes) {
-                r.mis_votos.removeAll(listaVotos);
+        if (perdedor != null) {
+            perdedor.eliminar();
+            perdedor.mis_votos.removeAll(listaVotos);
+            perdedores.add(perdedor);
+            postulantes.remove(perdedor);
+            System.out.printf("El perdedor es: %s con %d votos \n", perdedor.getNombre(), perdedor.mis_votos.size());
+        }
+        for (Candidato r : ganadores) {
+            for (Voto este : r.mis_votos) {
+                listaVotos.remove(este);
             }
+        }
+
+        for (Candidato r : postulantes) {
+            System.out.printf("%d son los votos de %s /n",r.mis_votos.size(),r.getNombre());
+            r.mis_votos.removeAll(listaVotos);
+        }
         return 1;
     }
 
@@ -251,5 +255,5 @@ public class Server extends Thread implements IConstants {
         for (Candidato r : ganadores) {
             System.out.println(r.getNombre() + r.getAgrupacion() + r.getColor());
         }
-    }       
+    }
 }

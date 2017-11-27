@@ -22,6 +22,7 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
     private JMenuItem addCandidateItem;
     private JMenuItem setVotingPeriodItem;
     private JMenuItem counterViewItem;    
+    private JMenuItem contabilizarVotoItem;
     
     private Server server;
     private VotingPeriodView votingPeriodView;
@@ -61,8 +62,7 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
         addCandidateItem.addActionListener(this);
         addCandidateMenu.add(addCandidateItem);        
         
-        JMenu setVotingPeriodMenu = new JMenu("Horario de votacion");
-        
+        JMenu setVotingPeriodMenu = new JMenu("Horario de votacion");        
         setVotingPeriodItem = new JMenuItem("Definir periodo");
         setVotingPeriodItem.addActionListener(this);
         counterViewItem = new JMenuItem("Cronómetro");
@@ -71,10 +71,17 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
         setVotingPeriodMenu.add(setVotingPeriodItem);   
         setVotingPeriodMenu.add(counterViewItem);   
         
+        JMenu contabilizarVotosMenu = new JMenu("Votos");        
+        contabilizarVotoItem = new JMenuItem("Contabilizar votos");
+        contabilizarVotoItem.addActionListener(this);
+        contabilizarVotoItem.setEnabled(false);       
+        contabilizarVotosMenu.add(contabilizarVotoItem);
+        
         menuBar.add(loadFileMenu);
         menuBar.add(createPositionMenu);
         menuBar.add(addCandidateMenu);
         menuBar.add(setVotingPeriodMenu);
+        menuBar.add(contabilizarVotosMenu);
         
         contentPane.getParent().add(menuBar).setBounds(0, 0, 820, 20);
         
@@ -130,11 +137,18 @@ public class PrincipalWindow extends javax.swing.JFrame implements ActionListene
             addPanel(votingPeriodView);
         } else if (e.getSource() == counterViewItem){
             addPanel(votingPeriodView.getVotingCounter());
+        } else if (e.getSource() == contabilizarVotoItem){
+            ContabilizarVotos contabilizarVotos = new ContabilizarVotos(server);
+            addPanel(contabilizarVotos);
         }
     }
     
     public void enableCounterViewItem(){
         counterViewItem.setEnabled(true);
+    }
+    
+    public void enableContabilizar(){
+        contabilizarVotoItem.setEnabled(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
