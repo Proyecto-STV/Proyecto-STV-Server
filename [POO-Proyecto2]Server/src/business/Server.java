@@ -180,7 +180,7 @@ public class Server extends Thread implements IConstants {
     }
 
     public int contar_votos() {        
-        int necesario = (votos.size() / puesto.getNumero() + 1) + 1; //Es drop
+        int necesario = (listaVotos.size() / puesto.getNumero() + 1) + 1; //Es drop
         System.out.println("La cantidad de votos es: ");
         System.out.println(listaVotos.size());
         System.out.println("Los votos necesarios para ganar es");
