@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 public class PersonData {
     private String fileName;
     private List<Persona> padronList;
-    private List<Persona> votantesList;
     
     public PersonData(String fileName) {
         this.fileName = fileName;
@@ -43,7 +42,7 @@ public class PersonData {
                     line = bufReader.readLine();
                 }
                 save(padronList);
-            }           
+            }         
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,7 +50,7 @@ public class PersonData {
     }
     
     public List<Persona> getVotantes(){
-        votantesList = new ArrayList<>();
+        padronList = new ArrayList<>();
         try {
             try (FileReader textFileReader = new FileReader(fileName)) {
                 BufferedReader bufReader = new BufferedReader(textFileReader);
@@ -112,19 +111,23 @@ public class PersonData {
         return true;
     }   
     
+    public void updatePersona(Persona person) {
+        int i = 0;        
+        for (Persona personList : getVotantes()) {
+            if (personList.getCedula().equals(person.getCedula())){
+                padronList.set(i, person);
+                System.out.println(person.toString());
+            }
+            i++;
+        }
+        save(padronList);
+    }
+    
     public List<Persona> getPersonList() {
         return padronList;
     }
 
     public void setPersonList(List<Persona> personList) {
         this.padronList = personList;
-    } 
-
-    public List<Persona> getVotantesList() {
-        return votantesList;
-    }
-
-    public void setVotantesList(List<Persona> votantesList) {
-        this.votantesList = votantesList;
-    }        
+    }      
 }

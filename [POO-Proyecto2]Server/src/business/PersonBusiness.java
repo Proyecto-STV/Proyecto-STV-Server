@@ -16,10 +16,14 @@ public class PersonBusiness implements IConstants{
         this.personData = new PersonData(fileName);
     }
     
-    public List<Persona> getAllPersons(){
+    public List<Persona> getPadron(){
         return personData.getPadron();
     }
 
+    public List<Persona> getVotantes(){
+        return personData.getVotantes();
+    }
+    
     public Persona searchPerson(String identificaction) {
         return personData.searchPerson(identificaction);
     }
@@ -36,11 +40,7 @@ public class PersonBusiness implements IConstants{
         this.personData.setPersonList(personList);
     } 
 
-    public List<Persona> getVotantesList() {
-        return personData.getVotantesList();
+    public void updatePersona(Persona person) {
+        this.personData.updatePersona(person);
     }
-
-    public void setVotantesList(List<Persona> votantesList) {
-        this.personData.setVotantesList(votantesList);
-    }  
 }

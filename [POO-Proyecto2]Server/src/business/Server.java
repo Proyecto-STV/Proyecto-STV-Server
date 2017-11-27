@@ -7,6 +7,7 @@ import domain.Voto;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
@@ -24,6 +25,8 @@ import util.IConstants;
 public class Server extends Thread implements IConstants {
 
     private PersonBusiness padronBusiness;
+    private PersonBusiness votantesBusiness;
+    
     private CandidatoBusiness candidatoBusiness;
     private Puesto puesto;
     private List<Candidato> postulantes;
@@ -35,6 +38,8 @@ public class Server extends Thread implements IConstants {
         this.postulantes = new ArrayList<>();
         this.listaVotos = new ArrayList<>();
         this.periodoVotacion = false;
+        this.padronBusiness = new PersonBusiness(PERSONS_FILE_NAME);
+        this.votantesBusiness = new PersonBusiness(VOTANTES_FILE_NAME);
     }
 
     @Override
@@ -59,6 +64,8 @@ public class Server extends Thread implements IConstants {
                     getCandidates(socket);
                 } else if (funcionString.equalsIgnoreCase(GET_POSITION)) {
                     getPuesto(socket);
+                } else if (funcionString.equalsIgnoreCase(CLIENT_CLOSED)){
+                    clientClossing(socket);
                 }
             } while (true);
         } catch (IOException | ClassNotFoundException ex) {
@@ -69,11 +76,13 @@ public class Server extends Thread implements IConstants {
     private void validatePerson(Socket socket, String identificaction) throws IOException, ClassNotFoundException {
         ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
         if (this.periodoVotacion) {
-            Persona respond = padronBusiness.searchPerson(identificaction);
+            Persona respond = votantesBusiness.searchPerson(identificaction);
             if (respond != null) {
                 objectOut.writeObject(1);
+                ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
+                objectIn.readObject();
                 objectOut.writeObject(respond);
-                padronBusiness.save(padronBusiness.getVotantesList());
+                votantesBusiness.save(votantesBusiness.getPersonList());
             } else {
                 objectOut.writeObject(0);
                 objectOut.writeObject(null);
@@ -81,9 +90,7 @@ public class Server extends Thread implements IConstants {
         } else {
             objectOut.writeObject(-1);
             objectOut.writeObject(null);
-        }
-        //ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
-        //Player originCoach = (Player) objectIn.readObject();
+        }       
     }
 
     private void getCandidates(Socket socket) throws IOException {
@@ -95,10 +102,20 @@ public class Server extends Thread implements IConstants {
         ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
         objectOut.writeObject(puesto);
     }
+    
+    private void clientClossing(Socket socket) throws IOException, ClassNotFoundException {
+        ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
+        Persona person = (Persona) objectIn.readObject();
+        System.out.println("");
+        System.out.println(person.toString());
+        votantesBusiness.updatePersona(person);
+    }
 
     public void loadFile(String absolutePath) {
         padronBusiness = new PersonBusiness(absolutePath);
-        padronBusiness.getAllPersons();
+        padronBusiness.getPadron();
+        votantesBusiness.save(padronBusiness.getPersonList());
+        votantesBusiness.getVotantes();
     }
 
     public Puesto getPuesto() {
@@ -197,5 +214,5 @@ public class Server extends Thread implements IConstants {
         for (Candidato r : ganadores) {
             System.out.println(r.getNombre() + r.getAgrupacion() + r.getColor());
         }
-    }
+    }   
 }
