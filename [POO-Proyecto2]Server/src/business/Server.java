@@ -66,6 +66,8 @@ public class Server extends Thread implements IConstants {
                     getPuesto(socket);
                 } else if (funcionString.equalsIgnoreCase(CLIENT_CLOSED)){
                     clientClossing(socket);
+                } else if (funcionString.equalsIgnoreCase(SEND_VOTE)){
+                    sendVote(socket);
                 }
             } while (true);
         } catch (IOException | ClassNotFoundException ex) {
@@ -108,6 +110,17 @@ public class Server extends Thread implements IConstants {
         Persona person = (Persona) objectIn.readObject();
         System.out.println("");
         System.out.println(person.toString());
+        votantesBusiness.updatePersona(person);
+    }
+    
+    private void sendVote(Socket socket) throws IOException, ClassNotFoundException {
+        ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
+        Voto voto = (Voto) objectIn.readObject();
+        listaVotos.add(voto);
+        for (Voto listaVoto : listaVotos) {
+            listaVoto.imprimirVotos();
+        }
+        Persona person = (Persona) objectIn.readObject();
         votantesBusiness.updatePersona(person);
     }
 
@@ -214,5 +227,5 @@ public class Server extends Thread implements IConstants {
         for (Candidato r : ganadores) {
             System.out.println(r.getNombre() + r.getAgrupacion() + r.getColor());
         }
-    }   
+    }       
 }

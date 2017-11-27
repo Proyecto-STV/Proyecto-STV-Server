@@ -14,4 +14,5 @@ public interface IConstants {
     public static String GET_CANDIDATES = "getCandidates";    
     public static String GET_POSITION = "getPuesto";
     public static String CLIENT_CLOSED = "client_close";
+    public static String SEND_VOTE = "send_vote";
 }
