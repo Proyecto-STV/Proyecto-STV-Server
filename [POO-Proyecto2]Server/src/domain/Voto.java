@@ -2,12 +2,18 @@ package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Voto implements Serializable{
-    private ArrayList<Candidato> info;
+public class Voto implements Serializable {
+
+    private List<Candidato> info;
 
     public Voto() {
         this.info = new ArrayList<>();
+    }
+
+    public Voto(List<Candidato> listaCandidatos) {
+        this.info = listaCandidatos;
     }
 
     public void imprimirVotos() {
@@ -21,23 +27,21 @@ public class Voto implements Serializable{
         info.add(candidato);
     }
 
-    public ArrayList<Candidato> getInfo() {
+    public List<Candidato> getInfo() {
         return info;
     }
 
     public void setInfo(ArrayList<Candidato> info) {
         this.info = info;
     }
-    
+
     public Candidato sacar_eleccion() {
-		for (Candidato e : info) {
-			if(e.is_eliminado()) {
-			}
-			else {
-				return e;
-			}
-		}
-		return null;
-	};
-    
+        for (Candidato e : info) {
+            if (e.is_eliminado()) {
+            } else {
+                return e;
+            }
+        }
+        return null;
+    }
 }
