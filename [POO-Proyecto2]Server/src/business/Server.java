@@ -195,31 +195,42 @@ public class Server extends Thread implements IConstants {
                 Candidato aux = e.sacar_eleccion();
                 if (aux != null) {
                     aux.agregar_a_mis_votos(e);
-                    for (Candidato r : postulantes) {
-                        if (r.mis_votos.size() >= necesario) {
-                            ganadores.add(r);
-                            System.out.printf("Este Candidato gano una silla %s \n", r.getNombre());
-                            r.eliminar();
-                            postulantes.remove(aux);
-                        }
+                    if (aux.mis_votos.size() >= necesario) {
+                        ganadores.add(aux);
+                        System.out.printf("Este Candidato gano una silla %s \n", aux.getNombre());
+                        aux.eliminar();
+                        postulantes.remove(aux);
                     }
+                    
                 }
             }
 
-            System.out.printf("Se encuentra al mayor perdedor \n");
-
-            Candidato perdedor = postulantes.get(0);
-            for (Candidato r : postulantes) {
-                System.out.printf("La cantidad de votos del candidato %s es %d \n", r.getNombre(), r.mis_votos.size());
-                if (perdedor.mis_votos.size() > r.mis_votos.size()) {
-                    perdedor = r;
+		Candidato perdedor = null;
+		if(!postulantes.isEmpty()) {
+			perdedor = postulantes.get(0);
+			System.out.printf("Se encuentra al mayor perdedor \n");
+		}
+            
+        for (Candidato r : postulantes) 
+            System.out.printf("La cantidad de votos del candidato %s es %d \n", r.getNombre(), r.mis_votos.size());
+            if (perdedor.mis_votos.size() > r.mis_votos.size()) {
+                perdedor = r;
                 }
             }
 
-            perdedor.eliminar();
-            postulantes.remove(perdedor);
-            System.out.printf("El perdedor es: %s \n", perdedor.getNombre());
-            for (Candidato r : postulantes) {
+		if(perdedor != null) {
+			perdedor.eliminar();
+		
+			puesto.corriendo.remove(perdedor);
+			System.out.printf("El perdedor es: %s con %d votos \n", perdedor.getNombre(), perdedor.mis_votos.size());
+		}
+      	for(Candidato r : ganadores) {
+			for(Voto este : r.mis_votos) {
+				votos.remove(este);
+			}
+		}
+        
+        for (Candidato r : postulantes) {
                 r.mis_votos.removeAll(listaVotos);
             }
         }
